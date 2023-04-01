@@ -7,9 +7,8 @@ from scipy.stats import norm
 chat_id = 773978697 # Ваш chat ID, не меняйте название переменной
 
 def solution(p: float, x: np.array) -> tuple:
-    n = len(x)
-    for i in range(n):
-        x[i] -= 0.038
-    max_val = np.max(x)
-    first, second = (1 - p) / 2, (1 + p) / 2
-    return max_val / (second**(1/n)) + 0.038, max_val / (first**(1/n)) + 0.038
+    alpha = 1 - p
+    loc = x.mean()
+    scale = np.sqrt(np.var(x)) / np.sqrt(len(x))
+    return loc - scale * norm.ppf(1 - alpha / 2), \
+           loc - scale * norm.ppf(alpha / 2)
